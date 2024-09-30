@@ -6,6 +6,8 @@ function App() {
     JSON.parse(localStorage.getItem("tasks")) || []
   );
 
+  const [taskToEdit, setTaskToEdit] = useState(null);
+
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
@@ -33,7 +35,7 @@ function App() {
       }
       return task;
     });
-    console.log(newTasks);
+
     setTasks(newTasks);
   }
 
@@ -51,17 +53,34 @@ function App() {
     console.log([...tasks, newTask]);
     setTasks([...tasks, newTask]);
   }
+  function updateTask(id, title, description) {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, title, description } : task
+    );
+    setTasks(updatedTasks);
+    setTaskToEdit(null); // Limpa a tarefa de edição após salvar
+  }
+
+  function onEditTask(task) {
+    setTaskToEdit(task); // Define a tarefa que será editada
+  }
+
   return (
     <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
       <div className="w-[500px] mx-auto space-y-4">
         <h1 className="text-3xl text-slate-100 font-bold text-center">
           Gerenciador de Tarefas
         </h1>
-        <AddTask addTask={addTask} />
+        <AddTask
+          addTask={addTask}
+          taskToEdit={taskToEdit}
+          updateTask={updateTask}
+        />
         <Tasks
           tasks={tasks}
           onTaskClick={onTaskClick}
           deletarTask={deletarTask}
+          onEditTask={onEditTask}
         />
       </div>
     </div>

@@ -1,8 +1,13 @@
-import { CheckIcon, ChevronRightIcon, Trash2Icon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronRightIcon,
+  EditIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
-function Tasks({ tasks, onTaskClick, deletarTask }) {
+function Tasks({ tasks, onTaskClick, deletarTask, onEditTask }) {
   const navegate = useNavigate();
   function seeDetails(task) {
     const query = new URLSearchParams();
@@ -28,6 +33,9 @@ function Tasks({ tasks, onTaskClick, deletarTask }) {
           </Button>
           <Button onClick={() => deletarTask(task.id)}>
             <Trash2Icon />
+          </Button>
+          <Button onClick={() => onEditTask(task)}>
+            <EditIcon />
           </Button>
         </li>
       ))}
